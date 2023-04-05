@@ -35,7 +35,7 @@ function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer ***REMOVED***'
       },
       body: JSON.stringify({
         'model': 'text-davinci-003',
