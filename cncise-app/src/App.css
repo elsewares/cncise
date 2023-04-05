@@ -1,0 +1,52 @@
+.app {
+  padding: 1em;
+  background-color: #282c34;
+  height: 100vh;
+}
+
+.app-header {
+  background-color: #282c34;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  justify-content: left;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.app-header h2 {
+  margin: 0
+}
+
+.app-logo {
+  height: 20px;
+  pointer-events: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: left;
+}
+
+main textarea {
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
