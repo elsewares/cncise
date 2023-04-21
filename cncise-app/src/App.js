@@ -40,7 +40,8 @@ function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
+        'Authorization': '*NEWP*',
+        'OpenAI-Organization': 'org-6E3Ul8Wfj3eg1yPG4aC3aD6A'
       },
       body: JSON.stringify({
         'model': 'text-davinci-edit-001',
