@@ -1,8 +1,6 @@
 import './App.css';
 import {Copyright} from './components/Copyright';
-
-import React, {useState, useEffect} from "react";
-
+import React, {useState, useEffect, useRef} from "react";
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +9,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {TextField} from "@mui/material";
+import {Paper, TextField} from "@mui/material";
 
 const theme = createTheme({
   typography: {
@@ -28,24 +26,32 @@ const theme = createTheme({
 function App() {
   
   const [email, setEmail] = useState('');
+  const [recipient, setRecipient] = useState('');
+  const [intent, setIntent] = useState('');
+  const [responses, setResponses] = useState([]);
+  const focusRef = useRef();
+  
+  useEffect(() => {
+    focusRef.current.focus();
+  }, []);
   
   async function handleOnClick() {
-    console.log(email);
     const res = await fetch('https://api.openai.com/v1/edits', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ***REMOVED***'
+        'Authorization': 'Bearer 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',
       },
       body: JSON.stringify({
-        'model': 'text-davinci-003',
+        'model': 'text-davinci-edit-001',
         'input': email,
-        'instruction': 'Make this email concise with a professional tone.',
-        'n': 5
+        'instruction': `Compose thoughtful response to the input, addressed to ${recipient} that expresses ${intent}`,
+        'n': 3
       })
     });
+    
     const data = await res.json();
-    console.log(data);
+    setResponses(data.choices);
   }
   
   return (
@@ -66,22 +72,41 @@ function App() {
         >
           <TextField
             id="outlined-multiline-static"
-            label="Email for Review"
+            label="Email for Repsonse"
             multiline
             minRows={8}
             fullWidth={true}
             placeholder={"Paste your email here"}
-            defaultValue={''}
+            ref={focusRef}
             onChange={(event) => setEmail(event.target.value)}
             value={email}
           />
-          <Button variant="outlined" onClick={handleOnClick}>Make it Concise</Button>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              id="recipient"
+              label="Recipient"
+              onChange={(event) => setRecipient(event.target.value)}
+              value={recipient}
+              />
+            <TextField
+              id="intent"
+              label="Intent"
+              onChange={(event) => setIntent(event.target.value)}
+              value={intent}
+              />
+          </Stack>
+          <Button variant="outlined" onClick={handleOnClick}>Respond</Button>
+          {responses.map((response, index) =>
+            <Paper elevation={3} key={index} sx={{p: 2, bgcolor: 'background.paper'}}>
+              {response.text}
+            </Paper>
+          )}
         </Stack>
       </main>
       {/* Footer */}
       <Box sx={{bgcolor: 'background.paper', p: 6}} component="footer">
         <Typography variant="subtitle1" align="center" color="text.secondary" component="p">
-          Make email concise again, one email at a time.
+          Be concise, one email at a time.
         </Typography>
         <Copyright/>
       </Box>
